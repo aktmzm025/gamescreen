@@ -1,0 +1,353 @@
+/* 스토리 화면 전체 컨테이너 */
+.story-screen {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+}
+
+.story-background {
+  width: 100%;
+  height: 100%;
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: #000;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
+  transition: all 1s ease-in-out;
+}
+
+/* S1 배경 - 전체 화면 덮기 */
+.s1-background {
+  background-image: url('./s1.png');
+}
+
+/* Island 배경 */
+.island-background {
+  background-image: url('./islandbackground.png');
+}
+
+/* S2 배경 - 전체 화면 덮기 */
+.s2-background {
+  background-image: url('./s2.png');
+}
+
+/* 오버레이 완전 제거 */
+.s1-background::before,
+.island-background::before,
+.s2-background::before {
+  display: none;
+}
+
+/* 전환 효과 - openscreen 방식 */
+.story-background.transitioning .story-content {
+  opacity: 0;
+  transition: opacity 0.3s ease-out;
+}
+
+/* 전환 오버레이 효과 - openscreen과 동일 */
+.story-background.transitioning::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 0;
+  height: 0;
+  background: radial-gradient(circle,
+      rgba(0, 0, 0, 0.9) 0%,
+      rgba(0, 0, 0, 0.7) 50%,
+      transparent 100%);
+  border-radius: 50%;
+  z-index: 1000;
+  opacity: 0;
+  transition: all 2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  width: 300vw;
+  height: 300vh;
+  opacity: 1;
+}
+
+.story-background::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 1;
+}
+
+/* 솟아오르는 섬 */
+.rising-island {
+  position: absolute;
+  bottom: -50%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 1200px;
+  height: 1200px;
+  background-image: url('./island.png');
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  z-index: 2;
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
+  will-change: clip-path, transform;
+  clip-path: inset(0 0 100% 0);
+  transition: all 4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.rising-island.visible {
+  clip-path: inset(0 0 0% 0);
+  transform: translateX(-50%) translateY(-60%);
+}
+
+/* 스토리 콘텐츠 */
+.story-content {
+  position: absolute;
+  bottom: 50px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  text-align: center;
+  color: white;
+  width: 90%;
+  max-width: 800px;
+  padding: 40px;
+  opacity: 0;
+  animation: fadeInContent 2s ease-out forwards;
+}
+
+.story-title {
+  font-size: 3.5rem;
+  font-weight: bold;
+  margin-bottom: 30px;
+  background: linear-gradient(135deg,
+      #4a9eff 0%,
+      #7dd3fc 50%,
+      #ffffff 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: 0 0 30px rgba(74, 158, 255, 0.5);
+  animation: titleGlow 3s ease-in-out infinite alternate;
+  letter-spacing: 2px;
+}
+
+.story-description {
+  font-size: 1.4rem;
+  line-height: 1.8;
+  margin-bottom: 50px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+  opacity: 0.9;
+  font-weight: 300;
+  letter-spacing: 1px;
+}
+
+/* 계속하기 버튼 */
+.continue-button {
+  position: relative;
+  padding: 18px 45px;
+  background: linear-gradient(145deg,
+      #4a9eff 0%,
+      #2563eb 50%,
+      #1d4ed8 100%);
+  border: 3px solid #ffffff;
+  border-radius: 30px;
+  color: white;
+  font-size: 1.2rem;
+  font-weight: bold;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  box-shadow:
+    0 8px 25px rgba(74, 158, 255, 0.4),
+    inset 0 2px 4px rgba(255, 255, 255, 0.2),
+    0 0 0 2px #e91e63;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+.continue-button:hover {
+  transform: translateY(-3px) scale(1.05);
+  box-shadow:
+    0 12px 35px rgba(74, 158, 255, 0.6),
+    inset 0 2px 4px rgba(255, 255, 255, 0.3),
+    0 0 0 3px #e91e63,
+    0 0 20px rgba(233, 30, 99, 0.5);
+}
+
+.button-ripple {
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg,
+      transparent,
+      rgba(255, 255, 255, 0.3),
+      transparent);
+  transition: left 0.6s ease;
+}
+
+.continue-button:hover .button-ripple {
+  left: 100%;
+}
+
+/* 물결 애니메이션 */
+.water-waves {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 200px;
+  z-index: 3;
+  pointer-events: none;
+}
+
+.wave {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 200%;
+  height: 60px;
+  background: linear-gradient(90deg,
+      transparent 0%,
+      rgba(74, 158, 255, 0.3) 25%,
+      rgba(74, 158, 255, 0.5) 50%,
+      rgba(74, 158, 255, 0.3) 75%,
+      transparent 100%);
+  border-radius: 50% 50% 0 0;
+  animation: waveMove 6s ease-in-out infinite;
+}
+
+.wave-1 {
+  bottom: 0;
+  animation-delay: 0s;
+  opacity: 0.6;
+}
+
+.wave-2 {
+  bottom: 20px;
+  animation-delay: -2s;
+  opacity: 0.4;
+  height: 40px;
+}
+
+.wave-3 {
+  bottom: 35px;
+  animation-delay: -4s;
+  opacity: 0.3;
+  height: 30px;
+}
+
+/* 애니메이션 */
+@keyframes fadeInContent {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(50px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+@keyframes titleGlow {
+  from {
+    text-shadow: 0 0 20px rgba(74, 158, 255, 0.5);
+  }
+
+  to {
+    text-shadow: 0 0 40px rgba(74, 158, 255, 0.8);
+  }
+}
+
+@keyframes waveMove {
+
+  0%,
+  100% {
+    transform: translateX(-50%) scaleY(1);
+  }
+
+  50% {
+    transform: translateX(-60%) scaleY(1.2);
+  }
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+  .rising-island {
+    width: 900px;
+    height: 900px;
+    bottom: -50%;
+  }
+
+  .rising-island.visible {
+    transform: translateX(-50%) translateY(-60%);
+  }
+
+  .story-title {
+    font-size: 2.5rem;
+  }
+
+  .story-description {
+    font-size: 1.2rem;
+    line-height: 1.6;
+  }
+
+  .continue-button {
+    padding: 15px 35px;
+    font-size: 1.1rem;
+  }
+
+  .story-content {
+    padding: 20px;
+    max-width: 600px;
+  }
+}
+
+@media (max-width: 480px) {
+  .rising-island {
+    width: 750px;
+    height: 750px;
+    bottom: -50%;
+  }
+
+  .rising-island.visible {
+    transform: translateX(-50%) translateY(-60%);
+  }
+
+  .story-title {
+    font-size: 2rem;
+  }
+
+  .story-description {
+    font-size: 1rem;
+    line-height: 1.5;
+    margin-bottom: 30px;
+  }
+
+  .continue-button {
+    padding: 12px 30px;
+    font-size: 1rem;
+  }
+
+  .story-content {
+    padding: 15px;
+    max-width: 400px;
+  }
+}

@@ -1,0 +1,573 @@
+/* 전환 오버레이 */
+.transition-overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 0;
+  height: 0;
+  background: radial-gradient(circle, 
+    rgba(0, 0, 0, 0.9) 0%, 
+    rgba(0, 0, 0, 0.7) 50%, 
+    transparent 100%);
+  border-radius: 50%;
+  z-index: 1000;
+  opacity: 0;
+  transition: all 2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  will-change: width, height, opacity;
+  transform-origin: center;
+}
+
+/* 전환 상태 */
+.start-screen.transitioning .transition-overlay {
+  width: 300vw;
+  height: 300vh;
+  opacity: 1;
+}
+
+.start-screen.transitioning .game-title {
+  opacity: 0;
+  transition: opacity 0.3s ease-out;
+}
+
+.start-screen.transitioning .bottom-content {
+  opacity: 0;
+  transition: opacity 0.3s ease-out;
+}
+
+.start-screen.transitioning .floating-island {
+  animation: islandPortalPulse 1.8s ease-out forwards;
+}
+
+.start-screen.transitioning .elemental-orbs {
+  animation: orbsSuckIn 1.2s ease-out forwards;
+}
+
+.start-screen.transitioning .floating-particles {
+  animation: particlesSuckIn 1.4s ease-out forwards;
+}/* 시작 화면 전체 컨테이너 */
+.start-screen {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+}
+
+.start-background {
+  width: 100%;
+  height: 100%;
+  background-image: url('./islandbackground.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
+}
+
+.start-background::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.3);
+  z-index: 1;
+}
+
+/* 플로팅 아일랜드 */
+.floating-island {
+  position: absolute;
+  bottom: 5%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 1200px;
+  height: 1200px;
+  background-image: url('./island.png');
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  z-index: 2;
+  animation: islandFloat 6s ease-in-out infinite;
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
+  will-change: transform, filter;
+  backface-visibility: hidden;
+}
+
+/* 플로팅 파티클 */
+.floating-particles {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: 1;
+  will-change: transform, opacity;
+}
+
+.particle {
+  position: absolute;
+  border-radius: 50%;
+  opacity: 0.6;
+  animation: floatParticle 6s ease-in-out infinite;
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+}
+
+.particle-0 {
+  width: 8px;
+  height: 8px;
+  background: #ff4444;
+  top: 20%;
+  left: 10%;
+  animation-delay: 0s;
+}
+
+.particle-1 {
+  width: 6px;
+  height: 6px;
+  background: #4488ff;
+  top: 30%;
+  left: 80%;
+  animation-delay: 1.5s;
+}
+
+.particle-2 {
+  width: 10px;
+  height: 10px;
+  background: #44ff44;
+  top: 70%;
+  left: 15%;
+  animation-delay: 3s;
+}
+
+.particle-3 {
+  width: 7px;
+  height: 7px;
+  background: #888888;
+  top: 60%;
+  left: 85%;
+  animation-delay: 4.5s;
+}
+
+/* 메인 콘텐츠 */
+.start-content {
+  position: relative;
+  z-index: 10;
+  text-align: center;
+  color: white;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  height: 100vh;
+  padding-top: 10vh;
+  padding-bottom: 10vh;
+}
+
+/* 게임 타이틀 */
+.game-title {
+  margin-bottom: 0;
+  margin-top: 0;
+  flex-shrink: 0;
+}
+
+/* 메뉴와 버전 정보를 위한 컨테이너 */
+.bottom-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 60px;
+  flex-shrink: 0;
+}
+
+.logo-image {
+  width: 700px;
+  height: 280px;
+  background-image: url('./logo.png');
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  margin: 0 auto 20px auto;
+  animation: logoGlow 3s ease-in-out infinite alternate;
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
+  filter: drop-shadow(0 0 20px rgba(74, 158, 255, 0.5));
+}
+
+.title-subtitle {
+  font-size: 1.2rem;
+  color: #cccccc;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  opacity: 0.8;
+}
+
+/* 메뉴 컨테이너 */
+.menu-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 30px;
+}
+
+/* 시작 버튼 */
+.start-button {
+  position: relative;
+  padding: 20px 50px;
+  background: linear-gradient(145deg, 
+    #e91e63 0%, 
+    #c2185b 30%, 
+    #ad1457 60%, 
+    #880e4f 100%);
+  border: 4px solid #ffffff;
+  border-radius: 25px;
+  color: white;
+  font-size: 1.4rem;
+  font-weight: bold;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  box-shadow: 
+    0 8px 25px rgba(233, 30, 99, 0.4),
+    inset 0 2px 4px rgba(255, 255, 255, 0.3),
+    0 0 0 2px #4a9eff;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.start-button:hover {
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 
+    0 12px 35px rgba(233, 30, 99, 0.6),
+    inset 0 2px 4px rgba(255, 255, 255, 0.4),
+    0 0 0 3px #4a9eff,
+    0 0 20px rgba(74, 158, 255, 0.5);
+}
+
+.start-button:active {
+  transform: translateY(-1px) scale(1.02);
+}
+
+.button-text {
+  position: relative;
+  z-index: 2;
+}
+
+.button-glow {
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, 
+    transparent, 
+    rgba(255, 255, 255, 0.4), 
+    transparent);
+  transition: left 0.6s ease;
+}
+
+.start-button:hover .button-glow {
+  left: 100%;
+}
+
+/* 메뉴 버튼들 */
+.menu-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.menu-button {
+  padding: 15px 35px;
+  background: linear-gradient(145deg, 
+    #4a9eff 0%, 
+    #2563eb 50%, 
+    #1d4ed8 100%);
+  border: 3px solid #ffffff;
+  border-radius: 20px;
+  color: white;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-width: 200px;
+  box-shadow: 
+    0 6px 20px rgba(74, 158, 255, 0.3),
+    inset 0 2px 4px rgba(255, 255, 255, 0.2),
+    0 0 0 2px #e91e63;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+.menu-button:hover {
+  background: linear-gradient(145deg, 
+    #5aa3ff 0%, 
+    #3b72f2 50%, 
+    #2563eb 100%);
+  transform: translateX(5px) scale(1.05);
+  box-shadow: 
+    0 8px 25px rgba(74, 158, 255, 0.5),
+    inset 0 2px 4px rgba(255, 255, 255, 0.3),
+    0 0 0 3px #e91e63,
+    0 0 15px rgba(233, 30, 99, 0.4);
+}
+
+/* 원소 오브들 */
+.elemental-orbs {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  will-change: transform, opacity;
+}
+
+.orb {
+  position: absolute;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5rem;
+  opacity: 0.7;
+  animation: orbFloat 4s ease-in-out infinite;
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+}
+
+.fire-orb {
+  top: 15%;
+  right: 10%;
+  background: radial-gradient(circle, 
+    rgba(255, 68, 68, 0.3) 0%, 
+    transparent 70%);
+  box-shadow: 0 0 30px rgba(255, 68, 68, 0.4);
+  animation-delay: 0s;
+}
+
+.water-orb {
+  bottom: 15%;
+  right: 15%;
+  background: radial-gradient(circle, 
+    rgba(68, 136, 255, 0.3) 0%, 
+    transparent 70%);
+  box-shadow: 0 0 30px rgba(68, 136, 255, 0.4);
+  animation-delay: 1s;
+}
+
+.nature-orb {
+  top: 20%;
+  left: 8%;
+  background: radial-gradient(circle, 
+    rgba(68, 255, 68, 0.3) 0%, 
+    transparent 70%);
+  box-shadow: 0 0 30px rgba(68, 255, 68, 0.4);
+  animation-delay: 2s;
+}
+
+.neutral-orb {
+  bottom: 20%;
+  left: 12%;
+  background: radial-gradient(circle, 
+    rgba(136, 136, 136, 0.3) 0%, 
+    transparent 70%);
+  box-shadow: 0 0 30px rgba(136, 136, 136, 0.4);
+  animation-delay: 3s;
+}
+
+/* 버전 정보 */
+.version-info {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 0.9rem;
+  z-index: 10;
+}
+
+/* 애니메이션 */
+@keyframes islandFloat {
+  0%, 100% {
+    transform: translateX(-50%) translateY(0px);
+  }
+  33% {
+    transform: translateX(-50%) translateY(-8px);
+  }
+  66% {
+    transform: translateX(-50%) translateY(-4px);
+  }
+}
+
+@keyframes logoGlow {
+  from {
+    filter: drop-shadow(0 0 20px rgba(74, 158, 255, 0.5));
+  }
+  to {
+    filter: drop-shadow(0 0 40px rgba(74, 158, 255, 0.8));
+  }
+}
+
+@keyframes floatParticle {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+    opacity: 0.6;
+  }
+  33% {
+    transform: translateY(-20px) rotate(120deg);
+    opacity: 0.8;
+  }
+  66% {
+    transform: translateY(-10px) rotate(240deg);
+    opacity: 0.4;
+  }
+}
+
+@keyframes orbFloat {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+    opacity: 0.7;
+  }
+  50% {
+    transform: translateY(-15px) rotate(180deg);
+    opacity: 0.9;
+  }
+}
+
+/* 전환 애니메이션들 */
+@keyframes islandPortalPulse {
+  0% {
+    transform: translateX(-50%) translateY(0px) scale(1) translateZ(0);
+    filter: brightness(1);
+  }
+  30% {
+    transform: translateX(-50%) translateY(-20px) scale(1.1) translateZ(0);
+    filter: brightness(1.3);
+  }
+  60% {
+    transform: translateX(-50%) translateY(-30px) scale(1.15) translateZ(0);
+    filter: brightness(1.5);
+  }
+  100% {
+    transform: translateX(-50%) translateY(-40px) scale(1.2) translateZ(0);
+    filter: brightness(2);
+  }
+}
+
+@keyframes orbsSuckIn {
+  0% {
+    opacity: 1;
+    transform: scale(1) rotate(0deg) translateZ(0);
+  }
+  30% {
+    opacity: 0.8;
+    transform: scale(1.1) rotate(90deg) translateZ(0);
+  }
+  60% {
+    opacity: 0.4;
+    transform: scale(0.7) rotate(360deg) translateZ(0);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0) rotate(720deg) translate(0, -50vh) translateZ(0);
+  }
+}
+
+@keyframes particlesSuckIn {
+  0% {
+    opacity: 1;
+    transform: scale(1) translateZ(0);
+  }
+  40% {
+    opacity: 0.6;
+    transform: scale(1.3) translateZ(0);
+  }
+  70% {
+    opacity: 0.2;
+    transform: scale(0.8) translateZ(0);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0) translate(0, -30vh) translateZ(0);
+  }
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+  .start-button {
+    padding: 18px 40px;
+    font-size: 1.2rem;
+  }
+  
+  .menu-button {
+    min-width: 180px;
+    padding: 12px 28px;
+    font-size: 1rem;
+  }
+  
+  .orb {
+    width: 60px;
+    height: 60px;
+    font-size: 2rem;
+  }
+  
+  .floating-island {
+    width: 900px;
+    height: 900px;
+    bottom: 3%;
+  }
+  
+  .logo-image {
+    width: 550px;
+    height: 220px;
+  }
+  
+  .start-content {
+    padding-top: 8vh;
+  }
+}
+
+@media (max-width: 480px) {
+  .title-subtitle {
+    font-size: 1rem;
+  }
+  
+  .start-button {
+    padding: 15px 35px;
+    font-size: 1.1rem;
+  }
+  
+  .menu-button {
+    min-width: 160px;
+    font-size: 0.95rem;
+    padding: 10px 25px;
+  }
+  
+  .floating-island {
+    width: 750px;
+    height: 750px;
+    bottom: 2%;
+  }
+  
+  .logo-image {
+    width: 450px;
+    height: 180px;
+  }
+  
+  .start-content {
+    padding-top: 6vh;
+  }
+}
